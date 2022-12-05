@@ -21,7 +21,8 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Shader Graphs_GW2
-  m_Shader: {fileID: -6465566751694194690, guid: de5ff71fabfb18e49885cf1432937feb, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: de5ff71fabfb18e49885cf1432937feb,
+    type: 3}
   m_ValidKeywords:
   - _DISABLE_DECALS
   - _DISABLE_SSR_TRANSPARENT
@@ -130,13 +131,13 @@ Material:
     - _ZWrite: 0
     - _alpha_depth: 0
     - _correctNormal: 1
-    - _depth: 53
+    - _depth: 140.76202
     - _foam_power: 680
     - _foam_texture_tiling: 15500
     - _gravity: 9.81
     - _normal_strenght: 1
     - _normal_tiling: 0.1
-    - _refraction: 0.19
+    - _refraction: 8.241758
     - _smoothness: 0.97
     - _steepness: 0.25
     - _strenght: 2
@@ -150,7 +151,7 @@ Material:
     - _w4_wl: 10
     - _w5_S: 0.011
     - _w5_wl: 5
-    - _wave_height: 14
+    - _wave_height: 14.196232
     - _wave_height_transparency: 1
     - _wave_lenght: 100
     - _waveblentpower: 5
