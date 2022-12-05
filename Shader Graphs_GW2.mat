@@ -129,15 +129,15 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 0
     - _alpha_depth: 0
-    - _correctNormal: 0
+    - _correctNormal: 1
     - _depth: 53
-    - _foam_power: 1
-    - _foam_texture_tiling: 1
+    - _foam_power: 680
+    - _foam_texture_tiling: 15500
     - _gravity: 9.81
     - _normal_strenght: 1
     - _normal_tiling: 0.1
-    - _refraction: 0.778
-    - _smoothness: 0.95
+    - _refraction: 0.19
+    - _smoothness: 0.97
     - _steepness: 0.25
     - _strenght: 2
     - _surface_wave_speed: 0.23
@@ -150,17 +150,18 @@ Material:
     - _w4_wl: 10
     - _w5_S: 0.011
     - _w5_wl: 5
-    - _wave_height: 8
+    - _wave_height: 14
     - _wave_height_transparency: 1
     - _wave_lenght: 100
-    - _waveblentpower: 1.4
+    - _waveblentpower: 5
     m_Colors:
     - _DoubleSidedConstants: {r: -1, g: -1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _deepwater: {r: 0.9528302, g: 0.9219944, b: 0.8, a: 0.7882353}
+    - _deepwater: {r: 0.95283014, g: 0.9219944, b: 0.8, a: 0.50980395}
     - _direction: {r: 1, g: 0, b: 0, a: 0}
+    - _foam_color: {r: 1, g: 1, b: 1, a: 0.49019608}
     - _foam_speed: {r: 0.5, g: 0.5, b: 0, a: 0}
-    - _shallow: {r: 0, g: 0, b: 0, a: 0.8862745}
+    - _shallow: {r: 0, g: 0, b: 0, a: 0.65882355}
     - _surface_dir_1: {r: 1, g: 0, b: 0, a: 0}
     - _surface_dir_2: {r: 0, g: 2, b: 0, a: 0}
     - _w2_d: {r: 1, g: 0, b: 1, a: 0}
