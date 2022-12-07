@@ -4,21 +4,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class PauseMenu : MonoBehaviour
+public class GerstnerWaveConfigMenu : MonoBehaviour
 {
+    public Game game;
+    public WaterController waterController;
     public UISettingsData settingsData;
     public UIData GerstnerUI1;
     public UIData GerstnerUI2;
     public UIData GerstnerUI3;
     bool valueHasChanged=false;
     [SerializeField] private TMPro.TextMeshProUGUI debugText;
-    [SerializeField] private GameObject children;
+   
 
     // Start is called before the first frame update
     void Start()
     {
-        GetData();
+        GameObject go = GameObject.Find("WaterController");
+        if (null == go)
+        {
+            Debug.LogError("Could not find WaterController");
+        }
+        else 
+        {
+            waterController = go.GetComponent<WaterController>();
+            if (null == waterController)
+            {
+                Debug.LogError("WaterController does not contains the WaterController script !!");
+            }
+            else 
+            {
+                GetData();
+            }
+        }
+  
+        
+     
         settingsData.activateTextureNormals.onValueChanged.AddListener(delegate {
             //changeActivateTextureNormals(settingsData.activateTextureNormals);
             valueHasChanged = true;
@@ -50,83 +70,73 @@ public class PauseMenu : MonoBehaviour
     }
     void setWaveHeight(Slider slider) 
     {
-        WaterController.current.setWaveHeight(slider.value);
+        waterController.setWaveHeight(slider.value);
     }
     void setDepth(Slider slider) 
     {
-        WaterController.current.set_depth(slider.value);
+        waterController.set_depth(slider.value);
     }
     void changeActivateTextureNormals(Toggle toggle) 
     {
-        WaterController.current.setActivateTextureNormals(toggle.isOn);
+        waterController.setActivateTextureNormals(toggle.isOn);
     }
 
     void setRefraction(Slider slider) 
     {
-        WaterController.current.setRefraction(slider.value);
+        waterController.setRefraction(slider.value);
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (WaterController.current.isGamePaused)
-            {
-                ResumeGame();
-            }
-            else
-            {
-                PauseGame();
-            }
-        }
+   
 
-        if (valueHasChanged && WaterController.current.isGamePaused == true) 
+        if (valueHasChanged && game.isGamePaused == true) 
         {
             updateFromUiValue();
         }
 
     }
 
-
-    void PauseGame()
-    {
-        children.SetActive(true);
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-        WaterController.current.isGamePaused = true;
-    }
-
-    void ResumeGame()
-    {
-        children.SetActive(false);
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        WaterController.current.isGamePaused = false;
-    }
-
     void GetData()
     {
-        GerstnerData[] waveData = WaterController.current.GetDataFromMaterial();
-        WaveSettingsData settings = WaterController.current.getSettingsFromMaterial();
-        settingsData.activateTextureNormals.isOn = settings.activateTextureNormals;
-        settingsData.depth.value = settings.depth;
-        settingsData.waveHeight.value = settings.waveHeight;
-        //GerstnerUI1.speed.text = waveData[0].Speed.ToString();
-        //GerstnerUI1.steepness.text = waveData[0].Steepness.ToString();
-        //GerstnerUI1.wavelength.text = waveData[0].WaveLength.ToString();
-        //GerstnerUI1.dir_x.text = waveData[0].Direction.x.ToString();
-        //GerstnerUI1.dir_y.text = waveData[0].Direction.y.ToString();
+        if((null == waterController)==false) { 
+        GerstnerData[] waveData = waterController.GetDataFromMaterial();
+        WaveSettingsData settings = waterController.getSettingsFromMaterial();
+            if (null == settings)
+            {
+                Debug.LogError("Returning null from material !!");
+            }
+            else
+            {
+                if (null == settingsData)
+                {
+                    Debug.LogError("settingsData is null");
+                }
+                else
+                {
+                    settingsData.activateTextureNormals.isOn = settings.activateTextureNormals;
+                    settingsData.depth.value = settings.depth;
+                    settingsData.waveHeight.value = settings.waveHeight;
+                }
+            }
+        }
+    
+    //GerstnerUI1.speed.text = waveData[0].Speed.ToString();
+    //GerstnerUI1.steepness.text = waveData[0].Steepness.ToString();
+    //GerstnerUI1.wavelength.text = waveData[0].WaveLength.ToString();
+    //GerstnerUI1.dir_x.text = waveData[0].Direction.x.ToString();
+    //GerstnerUI1.dir_y.text = waveData[0].Direction.y.ToString();
 
-        //GerstnerUI2.speed.text = waveData[1].Speed.ToString();
-        //GerstnerUI2.steepness.text = waveData[1].Steepness.ToString();
-        //GerstnerUI2.wavelength.text = waveData[1].WaveLength.ToString();
-        //GerstnerUI2.dir_x.text = waveData[1].Direction.x.ToString();
-        //GerstnerUI2.dir_y.text = waveData[1].Direction.y.ToString();
+    //GerstnerUI2.speed.text = waveData[1].Speed.ToString();
+    //GerstnerUI2.steepness.text = waveData[1].Steepness.ToString();
+    //GerstnerUI2.wavelength.text = waveData[1].WaveLength.ToString();
+    //GerstnerUI2.dir_x.text = waveData[1].Direction.x.ToString();
+    //GerstnerUI2.dir_y.text = waveData[1].Direction.y.ToString();
 
-        //GerstnerUI3.speed.text = waveData[2].Speed.ToString();
-        //GerstnerUI3.steepness.text = waveData[2].Steepness.ToString();
-        //GerstnerUI3.wavelength.text = waveData[2].WaveLength.ToString();
-        //GerstnerUI3.dir_x.text = waveData[2].Direction.x.ToString();
-        //GerstnerUI3.dir_y.text = waveData[2].Direction.y.ToString();
+    //GerstnerUI3.speed.text = waveData[2].Speed.ToString();
+    //GerstnerUI3.steepness.text = waveData[2].Steepness.ToString();
+    //GerstnerUI3.wavelength.text = waveData[2].WaveLength.ToString();
+    //GerstnerUI3.dir_x.text = waveData[2].Direction.x.ToString();
+    //GerstnerUI3.dir_y.text = waveData[2].Direction.y.ToString();
     }
 
     public void SetData()
@@ -156,9 +166,9 @@ public class PauseMenu : MonoBehaviour
             GerstnerData data3 = new GerstnerData(wavelength_3, speed_3, steepness_3, new Vector2(dir_x_3, dir_y_3));
 
             // Set Material Data
-            WaterController.current.SetData(data1, data2, data3);
+            waterController.SetData(data1, data2, data3);
             // Update CPU Data
-            WaterController.current.GetDataFromMaterial();
+            waterController.GetDataFromMaterial();
         }
         else
         {
