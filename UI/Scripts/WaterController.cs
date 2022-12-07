@@ -3,8 +3,6 @@ using UnityEngine;
 //Controlls the water
 public class WaterController : MonoBehaviour {
 
-	public static WaterController current;
-
     [Header("Gerstner Waves Variables")]
 
     [SerializeField]
@@ -13,14 +11,15 @@ public class WaterController : MonoBehaviour {
     [SerializeField]
     private Material material;
 
-    public bool isGamePaused = true;
+    public Game game;
+
+    public void Start() 
+    {
+        game = GetComponentInParent<Game>();
+    }
 
 	void Awake() 
     {
-        if (current != null) Destroy(this);
-
-		current = this;
-
         waveData = GetDataFromMaterial();
 	}
 
