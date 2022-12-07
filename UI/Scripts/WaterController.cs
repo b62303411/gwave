@@ -36,9 +36,11 @@ public class WaterController : MonoBehaviour {
         if (material != null)
         {
             GerstnerData[] data = {
-               genData(material.GetFloat("_wave_lenght"), material.GetFloat("_steepness"),  material.GetVector("_direction")),
-               genData(material.GetFloat("_w2_wl"), material.GetFloat("_w2_s"),  material.GetVector("_w2_d")),
-               genData(material.GetFloat("_w3_wl"), material.GetFloat("_w3_s"),  material.GetVector("_w3_d")),
+               genData(material.GetFloat("_w1_wl"), material.GetFloat("_w1_s"),  material.GetVector("_w1_d_n")),
+               genData(material.GetFloat("_w2_wl"), material.GetFloat("_w2_s"),  material.GetVector("_w2_d_n")),
+               genData(material.GetFloat("_w3_wl"), material.GetFloat("_w3_s"),  material.GetVector("_w3_d_n")),
+               genData(material.GetFloat("_w4_wl"), material.GetFloat("_w4_s"),  material.GetVector("_w4_d_n")),
+               genData(material.GetFloat("_w5_wl"), material.GetFloat("_w5_s"),  material.GetVector("_w5_d_n")),
             };
             return data;
         }
