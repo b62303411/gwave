@@ -46,8 +46,8 @@ float CalculateAngularFrequency(float period)
     float pi = 3.14159265358979323846;
     return 2 * pi / period;
 }
-float2 uv;
-;
+
+
 void GerstnerWave(float3 position, float3 direction, float wavelength, float steepness, inout float3 displacement, inout float3 tangent, inout float3 binormal)
 {
     float g = 9.80665;
@@ -118,22 +118,20 @@ void  gwaves_math_float(float3 position, float4 w1, float4 w2, float4 w3, float4
     binormal.x = 0;
     binormal.y = 0;
     binormal.z = 1;
-    displacement.x = position.x;
+
+    displacement.x = 0;
     displacement.y = 0;
-    displacement.z = position.z;
+    displacement.z = 0;
+
     gw(position, w1, displacement, tangent, binormal);
     gw(position, w2, displacement, tangent, binormal);
     gw(position, w3, displacement, tangent, binormal);
     gw(position, w4, displacement, tangent, binormal);
     gw(position, w5, displacement, tangent, binormal);
+
     normal = normalize(cross(tangent, binormal));
     tangent = normalize(tangent);
 
-    // Generate the gradient texture
-    //float color = lerp(float4(0, 0, 0, 1), float4(1, 1, 1, 1), uv.x);
-
-    // Write the gradient texture to the output texture
-    //tex2Dproj(tex, float4(uv, 0, 1)) = color;
 
 
 }
