@@ -2,7 +2,6 @@
 #define GWAVEHLSLINCLUDE_INCLUDED
 
 
-
 float CalculateWaveNumber(float wavelength)
 {
     float g = 9.80665;
@@ -46,19 +45,21 @@ float CalculateAngularFrequency(float period)
     float pi = 3.14159265358979323846;
     return 2 * pi / period;
 }
-float2 uv;
-;
+
 void GerstnerWave(float3 position, float3 direction, float wavelength, float steepness, inout float3 displacement, inout float3 tangent, inout float3 binormal)
 {
     float g = 9.80665;
+
     float pi = 3.14159265358979323846;
+
     // Parameters for the wave
 
     // Compute the wave frequency and speed from the steepness and wavelength
     float frequency = g / (2 * pi * wavelength);
 
+    
     float angularFrequency = sqrt(g * wavelength);
-
+    
     //float waveNumber = CalculateWaveNumber(wavelength);
     float wavenumber = 2 * pi / wavelength;
 
@@ -70,30 +71,27 @@ void GerstnerWave(float3 position, float3 direction, float wavelength, float ste
     float theta = dot(k.xz, position.xz) - (w * _Time.y);
 
     float amplitude = CalculateAmplitude(steepness, wavelength);
-
+    
     float km = wavenumber;
 
-    displacement.x += -direction.x * amplitude * sin(theta);
+    displacement.x +=  - direction.x * amplitude * sin(theta);
     displacement.y += amplitude * cos(theta);
-    displacement.z += -direction.z * amplitude * sin(theta);
-
+    displacement.z +=  - direction.z * amplitude * sin(theta);
+    
     // ds/dx partial derivative for the tengeant.
-    tangent.x += -(amplitude * k.x * k.x * cos(theta)) / km;
+    tangent.x += - (amplitude* k.x * k.x * cos(theta))/km;
     tangent.y += -amplitude * k.x * sin(theta);
-    tangent.z += -(amplitude * k.x * k.z * cos(theta)) / km;
-
+    tangent.z += -(amplitude * k.x * k.z * cos(theta))/km;
+    
     // ds/dz partial derivative for the binormal.
-    binormal.x += -((amplitude * k.x * k.z * cos(theta)) / km);
-    binormal.y += -(amplitude * k.z * sin(theta));
-    binormal.z += -((amplitude * k.z * k.z * cos(theta)) / km);
-
-    // Return the displacement as a float3 value
-
+    binormal.x += - ((amplitude * k.x * k.z * cos(theta))/km);
+    binormal.y += - (amplitude * k.z * sin(theta));
+    binormal.z += - ((amplitude * k.z * k.z * cos(theta))/km);
+    
 }
 
 
-void gw(float3 position, float4 wave, inout float3 displacement, inout float3 tangent, inout float3 binormal)
-{
+void gw(float3 position,float4 wave, inout float3 displacement,inout float3 tangent, inout float3 binormal)
 
     float wl = wave.x;
     float s = wave.y;
@@ -106,7 +104,9 @@ void gw(float3 position, float4 wave, inout float3 displacement, inout float3 ta
     float3 normalized_direction = normalize(direction);
 
     GerstnerWave(position, normalized_direction, wl, s, displacement, tangent, binormal);
+
 }
+
 
 void  gwaves_math_float(float3 position, float4 w1, float4 w2, float4 w3, float4 w4, float4 w5, out float3 displacement, out float3 normal, out float3 tangent)
 {
@@ -118,23 +118,20 @@ void  gwaves_math_float(float3 position, float4 w1, float4 w2, float4 w3, float4
     binormal.x = 0;
     binormal.y = 0;
     binormal.z = 1;
-    displacement.x = position.x;
-    displacement.y = 0;
-    displacement.z = position.z;
+
+    displacement.x=0;
+    displacement.y=0;
+    displacement.z=0;
+
     gw(position, w1, displacement, tangent, binormal);
     gw(position, w2, displacement, tangent, binormal);
     gw(position, w3, displacement, tangent, binormal);
     gw(position, w4, displacement, tangent, binormal);
     gw(position, w5, displacement, tangent, binormal);
+
     normal = normalize(cross(tangent, binormal));
+
     tangent = normalize(tangent);
-
-    // Generate the gradient texture
-    //float color = lerp(float4(0, 0, 0, 1), float4(1, 1, 1, 1), uv.x);
-
-    // Write the gradient texture to the output texture
-    //tex2Dproj(tex, float4(uv, 0, 1)) = color;
-
 
 }
 

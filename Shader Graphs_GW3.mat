@@ -116,14 +116,39 @@ Material:
     - _TransparentBackfaceEnable: 0
     - _TransparentCullMode: 2
     - _TransparentDepthPostpassEnable: 1
+<<<<<<< HEAD
+    - _TransparentDepthPrepassEnable: 1
+=======
     - _TransparentDepthPrepassEnable: 0
+>>>>>>> 0812fb9db6395c3285b63aab7849572937a93aa0
     - _TransparentSortPriority: 0
     - _TransparentWritingMotionVec: 0
-    - _TransparentZWrite: 0
+    - _TransparentZWrite: 1
     - _UseShadowThreshold: 0
     - _ZTestDepthEqualForOpaque: 4
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
+<<<<<<< HEAD
+    - _ZWrite: 1
+    - _alpha_depth: 1
+    - _depth: 0.5
+    - _gravity: 9.81
+    - _maximum_wave_height: 30
+    - _normal_strenght: 10
+    - _refraction: 0.1
+    - _smoothness: 1
+    - _w1_s: 0.086
+    - _w1_wl: 200
+    - _w2_s: 0.5
+    - _w2_wl: 150
+    - _w3_s: 0.596
+    - _w3_wl: 20
+    - _w4_s: 0.073
+    - _w4_wl: 15
+    - _w5_s: 0.039
+    - _w5_wl: 8
+    - _wave_height: 2
+=======
     - _ZWrite: 0
     - _alpha_depth: 1
     - _depth: 0.01
@@ -143,15 +168,16 @@ Material:
     - _w5_s: 0.064
     - _w5_wl: 8
     - _wave_height: 1
+>>>>>>> 0812fb9db6395c3285b63aab7849572937a93aa0
     m_Colors:
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _w1_d_n: {r: 1, g: 0, b: 0, a: 0}
-    - _w2_d_n: {r: 1, g: 0, b: -1, a: 0}
+    - _w1_d_n: {r: 2, g: 0, b: 3, a: 0}
+    - _w2_d_n: {r: 2, g: 0, b: 3, a: 0}
     - _w3_d_n: {r: 3, g: 0, b: 2, a: 0}
-    - _w4_d_n: {r: 1, g: 0, b: 0, a: 0}
-    - _w5_d_n: {r: -1, g: 0, b: -5, a: 0}
+    - _w4_d_n: {r: 2, g: 0, b: 3, a: 0}
+    - _w5_d_n: {r: 2, g: 0, b: -5, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2410089935783873248
 MonoBehaviour:
