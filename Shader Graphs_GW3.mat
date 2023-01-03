@@ -8,8 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Shader Graphs_GW3
-  m_Shader: {fileID: -6465566751694194690, guid: e75e4610d4d655a46990563b6efd1bfc,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: e75e4610d4d655a46990563b6efd1bfc, type: 3}
   m_ValidKeywords:
   - _DOUBLESIDED_ON
   - _ENABLE_FOG_ON_TRANSPARENT
@@ -117,7 +116,11 @@ Material:
     - _TransparentBackfaceEnable: 0
     - _TransparentCullMode: 2
     - _TransparentDepthPostpassEnable: 1
+<<<<<<< HEAD
     - _TransparentDepthPrepassEnable: 1
+=======
+    - _TransparentDepthPrepassEnable: 0
+>>>>>>> 0812fb9db6395c3285b63aab7849572937a93aa0
     - _TransparentSortPriority: 0
     - _TransparentWritingMotionVec: 0
     - _TransparentZWrite: 1
@@ -125,6 +128,7 @@ Material:
     - _ZTestDepthEqualForOpaque: 4
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
+<<<<<<< HEAD
     - _ZWrite: 1
     - _alpha_depth: 1
     - _depth: 0.5
@@ -144,6 +148,27 @@ Material:
     - _w5_s: 0.039
     - _w5_wl: 8
     - _wave_height: 2
+=======
+    - _ZWrite: 0
+    - _alpha_depth: 1
+    - _depth: 0.01
+    - _gravity: 9.81
+    - _maximum_wave_height: 30
+    - _normal_strenght: 10
+    - _refraction: 0.25801304
+    - _smoothness: 1
+    - _w1_s: 0.1
+    - _w1_wl: 200
+    - _w2_s: 0.25
+    - _w2_wl: 30
+    - _w3_s: 0.102
+    - _w3_wl: 20
+    - _w4_s: 0.094
+    - _w4_wl: 15
+    - _w5_s: 0.064
+    - _w5_wl: 8
+    - _wave_height: 1
+>>>>>>> 0812fb9db6395c3285b63aab7849572937a93aa0
     m_Colors:
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: 1, a: 0}
