@@ -8,38 +8,26 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Shader Graphs_GerstnerMath
-  m_Shader: {fileID: -6465566751694194690, guid: ca3ceed0e1ed594449297669634232f3,
+  m_Shader: {fileID: -6465566751694194690, guid: 41e3be3d51529f348a556c53fe4a502a,
     type: 3}
   m_ValidKeywords:
-  - _DISABLE_SSR_TRANSPARENT
   - _DOUBLESIDED_ON
   - _ENABLE_FOG_ON_TRANSPARENT
   - _SURFACE_TYPE_TRANSPARENT
-  - _TRANSPARENT_WRITES_MOTION_VEC
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1
   m_CustomRenderQueue: 3000
   stringTagMap:
-    MotionVector: User
     RenderType: Transparent
   disabledShaderPasses:
-  - MOTIONVECTORS
+  - RayTracingPrepass
   - TransparentDepthPostpass
   - TransparentBackface
-  - RayTracingPrepass
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _Texture2DAsset_08a5a0cbce3e48a7a8303ffe910cf027_Out_0:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Texture2DAsset_af5f3e0cd6644c7ca77cc03703b1895d_Out_0:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _normal_water_1:
         m_Texture: {fileID: 2800000, guid: 09ef4c626a9f5bf4a8bec816e09eb918, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -82,16 +70,16 @@ Material:
     - _OpaqueCullMode: 2
     - _RayTracing: 0
     - _ReceivesSSR: 1
-    - _ReceivesSSRTransparent: 0
+    - _ReceivesSSRTransparent: 1
     - _RefractionModel: 0
     - _RenderQueueType: 4
     - _RequireSplitLighting: 0
     - _SrcBlend: 1
     - _StencilRef: 0
-    - _StencilRefDepth: 0
+    - _StencilRefDepth: 8
     - _StencilRefDistortionVec: 4
-    - _StencilRefGBuffer: 2
-    - _StencilRefMV: 32
+    - _StencilRefGBuffer: 10
+    - _StencilRefMV: 40
     - _StencilWriteMask: 6
     - _StencilWriteMaskDepth: 8
     - _StencilWriteMaskDistortionVec: 4
@@ -104,24 +92,26 @@ Material:
     - _TransparentDepthPostpassEnable: 0
     - _TransparentDepthPrepassEnable: 1
     - _TransparentSortPriority: 0
-    - _TransparentWritingMotionVec: 1
-    - _TransparentZWrite: 1
+    - _TransparentWritingMotionVec: 0
+    - _TransparentZWrite: 0
     - _UseShadowThreshold: 0
     - _ZTestDepthEqualForOpaque: 4
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
-    - _ZWrite: 1
-    - _depth: 23
+    - _ZWrite: 0
+    - _depth: 0
+    - _normal_strenght: 3
+    - _normal_tiling: 0.1
     m_Colors:
     - _DoubleSidedConstants: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _w1: {r: 200, g: 1, b: -45, a: -15}
-    - _w2: {r: 1, g: 0.005, b: 23, a: 100}
-    - _w3: {r: 1, g: 0.005, b: 2, a: 2}
-    - _w4: {r: 1, g: 0.002, b: 3, a: 4}
-    - _w5: {r: 1, g: 0.001, b: 1, a: 3}
+    - _w1: {r: 200, g: 0.12, b: 1, a: 0}
+    - _w2: {r: 100, g: 0.2, b: 3, a: 1}
+    - _w3: {r: 80, g: 0.03, b: 4, a: 2}
+    - _w4: {r: 60, g: 0.6, b: 1, a: 0}
+    - _w5: {r: 10, g: 0.7, b: 0, a: 3}
   m_BuildTextureStacks: []
---- !u!114 &8228615971517997915
+--- !u!114 &1301647603691557619
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
