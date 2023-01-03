@@ -48,12 +48,17 @@ public class GerstnerWaveConfigMenu : MonoBehaviour
             valueHasChanged = true;
         });
 
-        settingsData.waveHeight.onValueChanged.AddListener(delegate {
+        settingsData.waveLenght.onValueChanged.AddListener(delegate {
             //changeActivateTextureNormals(settingsData.activateTextureNormals);
             valueHasChanged = true;
         });
 
         settingsData.refraction.onValueChanged.AddListener(delegate {
+            //changeActivateTextureNormals(settingsData.activateTextureNormals);
+            valueHasChanged = true;
+        });
+
+        settingsData.waveSelection.onValueChanged.AddListener(delegate {
             //changeActivateTextureNormals(settingsData.activateTextureNormals);
             valueHasChanged = true;
         });
@@ -64,7 +69,7 @@ public class GerstnerWaveConfigMenu : MonoBehaviour
     {
         changeActivateTextureNormals(settingsData.activateTextureNormals);
         setDepth(settingsData.depth);
-        setWaveHeight(settingsData.waveHeight);
+        //setWaveHeight(settingsData.waveHeight);
         setRefraction(settingsData.refraction);
         valueHasChanged = false;
     }
@@ -115,7 +120,7 @@ public class GerstnerWaveConfigMenu : MonoBehaviour
                 {
                     settingsData.activateTextureNormals.isOn = settings.activateTextureNormals;
                     settingsData.depth.value = settings.depth;
-                    settingsData.waveHeight.value = settings.waveHeight;
+                    settingsData.waveLenght.value = settings.waveLenght;
                 }
             }
         }
@@ -192,10 +197,12 @@ public class UIData
 [System.Serializable]
 public class UISettingsData
 {
+    public Dropdown waveSelection;
     public Toggle activateTextureNormals;
     public Toggle waveHeightTransparency;
     public Toggle alphaDepth;
-    public Slider depth;
-    public Slider waveHeight;
     public Slider refraction;
+    public Slider depth;
+    public Slider waveLenght;
+    public Slider steepness;
 }
