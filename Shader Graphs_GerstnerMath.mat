@@ -14,17 +14,20 @@ Material:
   - _DOUBLESIDED_ON
   - _ENABLE_FOG_ON_TRANSPARENT
   - _SURFACE_TYPE_TRANSPARENT
+  - _TRANSPARENT_WRITES_MOTION_VEC
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1
   m_CustomRenderQueue: 3000
   stringTagMap:
+    MotionVector: User
     RenderType: Transparent
   disabledShaderPasses:
   - RayTracingPrepass
   - TransparentDepthPostpass
   - TransparentBackface
+  - MOTIONVECTORS
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -92,24 +95,24 @@ Material:
     - _TransparentDepthPostpassEnable: 0
     - _TransparentDepthPrepassEnable: 1
     - _TransparentSortPriority: 0
-    - _TransparentWritingMotionVec: 0
-    - _TransparentZWrite: 0
+    - _TransparentWritingMotionVec: 1
+    - _TransparentZWrite: 1
     - _UseShadowThreshold: 0
     - _ZTestDepthEqualForOpaque: 4
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
-    - _ZWrite: 0
-    - _depth: 0
+    - _ZWrite: 1
+    - _depth: 12
     - _normal_strenght: 3
     - _normal_tiling: 0.1
     m_Colors:
     - _DoubleSidedConstants: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _w1: {r: 200, g: 0.12, b: 1, a: 0}
-    - _w2: {r: 100, g: 0.2, b: 3, a: 1}
-    - _w3: {r: 80, g: 0.03, b: 4, a: 2}
-    - _w4: {r: 60, g: 0.6, b: 1, a: 0}
-    - _w5: {r: 10, g: 0.7, b: 0, a: 3}
+    - _w1: {r: 109.1, g: 0.18, b: 2, a: 0}
+    - _w2: {r: 100, g: 0.02, b: 4, a: 1}
+    - _w3: {r: 80, g: 0.03, b: 6, a: 2}
+    - _w4: {r: 60, g: 0.6, b: 8, a: 0}
+    - _w5: {r: 10, g: 0.07, b: 12, a: 3}
   m_BuildTextureStacks: []
 --- !u!114 &1301647603691557619
 MonoBehaviour:
