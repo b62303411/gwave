@@ -16,7 +16,7 @@ public class TilingScript : MonoBehaviour
     public GameObject tilePrefab;
     Vector3 getPosition(int x, int z, float tileSize,float totalWidth,float totalLength) 
     {
-        Vector3 position = new Vector3(x * tileSize - (totalWidth / 2), 0, z * tileSize - (totalLength / 2));
+        Vector3 position = new Vector3(transform.position.x + x * tileSize - (totalWidth / 2), 0, transform.position.z+z * tileSize - (totalLength / 2));
         return position;
     }
     void Start()
