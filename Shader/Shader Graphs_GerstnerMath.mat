@@ -110,7 +110,7 @@ Material:
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _w1: {r: 1000, g: 0.1, b: 1, a: 0}
+    - _w1: {r: 300, g: 0.21, b: 1, a: 0}
     - _w2: {r: 2, g: 0.003, b: 1, a: -1}
     - _w3: {r: 2, g: 0.03, b: 3, a: 2}
     - _w4: {r: 2, g: 0.02, b: 1, a: 0}

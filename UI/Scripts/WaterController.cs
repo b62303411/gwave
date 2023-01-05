@@ -143,6 +143,34 @@ public class WaterController : MonoBehaviour
         return displacement.y;
     }
 
+    public WaveComponent GetWaveFullAddition(Vector3 position, float timeSinceStart)
+    {
+        Vector3 result = new Vector3();
+        WaveComponent component = new WaveComponent();
+        Vector3 tangent = new Vector3();
+        tangent.x = 1;
+        tangent.y = 0;
+        tangent.z = 0;
+        Vector3 binormal = new Vector3();
+        binormal.x = 0;
+        binormal.y = 0;
+        binormal.z = 1;
+        foreach (GerstnerData data in waveData)
+        {
+
+            WaveComponent component_ = WaveTypes.GerstnerWaveComplete(position, data.Direction, data.Steepness, data.WaveLength, data.Speed, timeSinceStart);
+            component.tangent += component_.tangent;
+            component.binormal += component_.binormal;
+            component.displacement += component_.displacement;
+
+            
+
+        }
+
+        return component;
+    }
+
+
     public Vector3 GetWaveAddition(Vector3 position, float timeSinceStart)
     {
         Vector3 result = new Vector3();
