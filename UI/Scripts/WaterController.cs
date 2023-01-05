@@ -20,7 +20,9 @@ public class WaterController : MonoBehaviour
         game = GetComponentInParent<Game>();
 
     }
-
+    public void Update() {
+        waveData = GetDataFromMaterial();
+    }
     void Awake()
     {
         waveData = GetDataFromMaterial();
@@ -61,6 +63,7 @@ public class WaterController : MonoBehaviour
 
         return list.ToArray();
     }
+
     public GerstnerData[] getDataV1()
     {
 
@@ -119,18 +122,25 @@ public class WaterController : MonoBehaviour
         */
     }
 
-    public float getHeightAtPosition(Vector3 position)
+    public Vector3 getDisplacement(Vector3 position) 
     {
         float time = Time.timeSinceLevelLoad;
-        Vector3 currentPosition = GetWaveAddition(position, time);
-
+        Vector3 displacement = GetWaveAddition(position, time);
+        /*
         for (int i = 0; i < 3; i++)
         {
             Vector3 diff = new Vector3(position.x - currentPosition.x, 0, position.z - currentPosition.z);
             currentPosition = GetWaveAddition(diff, time);
-        }
+        }*/
 
-        return currentPosition.y;
+        return displacement;
+    }
+
+    public float getHeightAtPosition(Vector3 position)
+    {
+        Vector3 displacement = getDisplacement(position);
+
+        return displacement.y;
     }
 
     public Vector3 GetWaveAddition(Vector3 position, float timeSinceStart)
@@ -144,6 +154,7 @@ public class WaterController : MonoBehaviour
 
         return result;
     }
+
     public void setActivateTextureNormals(bool isActive)
     {
         int _isActive = 0;

@@ -54,28 +54,33 @@ void GerstnerWave(float3 position, float3 direction, float wavelength, float ste
     float pi = 3.14159265358979323846;
     // Parameters for the wave
 
-    // Compute the wave frequency and speed from the steepness and wavelength
+    // #1 Compute the wave frequency and speed from the steepness and wavelength
     float frequency = g / (2 * pi * wavelength);
 
+    // #2 Compute the angularfrequency 
     float angularFrequency = sqrt(g * wavelength);
 
-    //float waveNumber = CalculateWaveNumber(wavelength);
+    // #3 Compute the wave number
     float wavenumber = 2 * pi / wavelength;
 
-    //km = sqrt(pow(k.x,2)+ pow(k.z,2));
+    // #4 Create vector k.
     float3 k = direction * wavenumber;
 
+    // #5 Compute the speed.
     float w = sqrt(g * wavenumber);
 
+    // #6 compute theta.
     float theta = dot(k.xz, position.xz) - (w * _Time.y);
+    
+    // #7 compute amplitude.
+    float amplitude = steepness / wavenumber;
 
-    float amplitude = CalculateAmplitude(steepness, wavelength);
-
+    // #8 Km is equal to the wave number.
     float km = wavenumber;
 
-    displacement.x += -direction.x * amplitude * sin(theta);
+    displacement.x += -(k.x/km * amplitude * sin(theta));
     displacement.y += amplitude * cos(theta);
-    displacement.z += -direction.z * amplitude * sin(theta);
+    displacement.z += -(k.z/km * amplitude * sin(theta));
 
     // ds/dx partial derivative for the tengeant.
     tangent.x += -(amplitude * k.x * k.x * cos(theta)) / km;

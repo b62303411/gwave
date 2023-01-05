@@ -12,6 +12,14 @@ public class TilingScript : MonoBehaviour
     // The resolution of each tile
     public int tileResolution = 10;
 
+    class Lod 
+    {
+       public int begin;
+       public int end;
+       public int detail;
+    }
+    List<Lod> lodList;
+
     // The prefab for the tiles
     public GameObject tilePrefab;
     Vector3 getPosition(int x, int z, float tileSize,float totalWidth,float totalLength) 
@@ -21,6 +29,21 @@ public class TilingScript : MonoBehaviour
     }
     void Start()
     {
+        List<Lod>  lodList = new List<Lod>();
+        int startDistance = 350;
+        int increment = 250;
+        int startDetail = 50;
+        int detailReduction=5;
+        for (int i = 0; i < 6;i++) 
+        {
+            Lod l = new Lod();
+            l.begin = startDistance;
+            l.end = startDistance + increment;
+            l.detail = startDetail;
+            lodList.Add(l);
+            startDistance = l.end;
+            startDetail = startDetail - detailReduction;
+        }
         // Calculate the size of each tile
         float tileSize = tileResolution;
         // Calculate the total size of the grid
@@ -52,7 +75,15 @@ public class TilingScript : MonoBehaviour
                 float distance = Mathf.Sqrt(Mathf.Pow(position.x, 2) + Mathf.Pow(position.z, 2));
                 float distanceV = Vector3.Distance(position, myCenter);
                 Debug.Log(distance);
-                if (distance >= 250 && distance < 350)
+                foreach (Lod l in lodList) 
+                {
+                    if (distance >= l.begin && distance < l.end) 
+                    {
+                        planeGen.setLod(l.detail);
+                    }
+                }
+                /*
+                if (distance >= 350 && distance < 350)
                 {
                     planeGen.setLod(25);
                 }
@@ -75,7 +106,7 @@ public class TilingScript : MonoBehaviour
                 else if (distance >= 3000)
                 {
                     planeGen.setLod(2);
-                }
+                }*/
                 planeGen.generateMesh();
             }
 

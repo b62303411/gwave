@@ -63,6 +63,7 @@ Material:
     - _CullMode: 0
     - _CullModeForward: 0
     - _DepthOffsetEnable: 0
+    - _DiffusionProfileHash: 0
     - _DoubleSidedEnable: 1
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 2
@@ -106,13 +107,14 @@ Material:
     - _normal_tiling: 0.1
     - _waveMaximumHeight: 111
     m_Colors:
+    - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _w1: {r: 88.2, g: 0.8, b: 2, a: 0}
-    - _w2: {r: 65.3, g: 0.02, b: 0, a: 1}
-    - _w3: {r: 80, g: 0.03, b: 0, a: 2}
-    - _w4: {r: 60, g: 0.6, b: 0, a: 2}
-    - _w5: {r: 10, g: 0.07, b: 12, a: 3}
+    - _w1: {r: 1000, g: 0.1, b: 1, a: 0}
+    - _w2: {r: 2, g: 0.003, b: 1, a: -1}
+    - _w3: {r: 2, g: 0.03, b: 3, a: 2}
+    - _w4: {r: 2, g: 0.02, b: 1, a: 0}
+    - _w5: {r: 2, g: 0.001, b: -1, a: -5}
   m_BuildTextureStacks: []
 --- !u!114 &1301647603691557619
 MonoBehaviour:
