@@ -1235,7 +1235,7 @@
     "m_FragmentContext": {
         "m_Position": {
             "x": 1261.6666259765625,
-            "y": -272.6667175292969
+            "y": -293.0000305175781
         },
         "m_Blocks": [
             {
@@ -4176,7 +4176,7 @@
         "HLSL"
     ],
     "m_Precision": 0,
-    "m_PreviewExpanded": false,
+    "m_PreviewExpanded": true,
     "m_PreviewMode": 0,
     "m_CustomColors": {
         "m_SerializableColors": []
