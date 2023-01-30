@@ -1,0 +1,96 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class TilingScript : MonoBehaviour
+{
+
+    // The width and length of the tile grid
+    public int gridWidth = 10;
+    public int gridLength = 10;
+
+    // The resolution of each tile
+    public int tileResolution = 10;
+
+    public int startDetail;
+    public int detailReduction = 5;
+
+    class Lod 
+    {
+       public int begin;
+       public int end;
+       public int detail;
+    }
+    List<Lod> lodList;
+
+    // The prefab for the tiles
+    public GameObject tilePrefab;
+    Vector3 getPosition(int x, int z, float tileSize,float totalWidth,float totalLength) 
+    {
+        Vector3 position = new Vector3(transform.position.x + x * tileSize - (totalWidth / 2), 0, transform.position.z+z * tileSize - (totalLength / 2));
+        return position;
+    }
+    void Start()
+    {
+        List<Lod>  lodList = new List<Lod>();
+        int startDistance = 0;
+        int increment = tileResolution;
+        int sd = startDetail;
+        for (int i = 0; i < 10;i++) 
+        {
+            Lod l = new Lod();
+            l.begin = startDistance;
+            l.end = startDistance + increment;
+            l.detail = sd - (i*i)*2;
+            lodList.Add(l);
+            startDistance = l.end;
+            if(startDetail> detailReduction)
+                startDetail = startDetail - detailReduction;
+        }
+        // Calculate the size of each tile
+        float tileSize = tileResolution;
+        // Calculate the total size of the grid
+        float totalWidth = tileSize * gridWidth;
+        float totalLength = tileSize * gridLength;
+
+        // Calculate the center of the grid
+        Vector3 center = new Vector3(totalWidth / 2, 0, totalLength / 2);
+        Vector3 myCenter = getPosition(5, 5, tileSize,totalWidth,totalLength);
+        Vector3 test = getPosition(5, 9, tileSize, totalWidth, totalLength);
+        float distance_test = Vector3.Distance(test, myCenter);
+        // Instantiate the tiles
+        for (int z = 0; z < gridLength; z++)
+        {
+            for (int x = 0; x < gridWidth; x++)
+            {
+                // Create a new tile at the correct position
+                Vector3 position = getPosition(x, z, tileSize, totalWidth, totalLength);
+                //float p_x = x * tileSize - (totalWidth / 2);
+                //float p_z = z * tileSize - (totalLength / 2);
+
+                GameObject tile = Instantiate(tilePrefab, position, Quaternion.identity);
+                PlaneGeneration planeGen = tile.GetComponent<PlaneGeneration>();
+                planeGen.width = tileResolution;
+                planeGen.length = tileResolution;
+                // Set the tile's parent to be this object
+                tile.transform.parent = transform;
+                tile.name = "Tile (" + x + ", " + z + ")";
+                float distance = Mathf.Sqrt(Mathf.Pow(position.x, 2) + Mathf.Pow(position.z, 2));
+                float distanceV = Vector3.Distance(position, myCenter);
+               // Debug.Log(distance);
+                planeGen.setLod(4);
+                foreach (Lod l in lodList) 
+                {
+                    if (distance >= l.begin && distance < l.end) 
+                    {
+                        planeGen.setLod(l.detail);
+                    }
+                }
+
+                planeGen.generateMesh();
+            }
+
+
+        }
+    }
+}

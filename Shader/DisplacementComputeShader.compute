@@ -1,0 +1,74 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+RWTexture2D<float4> Result;
+
+shared float4 _Speed;
+shared float4 _Position;
+shared float _Time;
+
+float dt;
+float c;
+
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID, uint3 groupId : SV_GroupID)
+{
+ 
+    // Get the current pixel
+    int x = id.x;
+    int y = id.y;
+    int width = 255 - 1;
+    if (x >= 1 && x < width && y >= 1 && y < width)
+    {
+        float pixelDistanceFromOrigin;
+        float waveDistanceFromOrigin = _Speed * _Time;
+
+        float delta = pixelDistanceFromOrigin - waveDistanceFromOrigin;
+        //if +-2 draw pixel;
+
+        /*
+        vec4 z = a * (texture(z_tex, UV + vec2(pix_size, 0.0f))
+            + texture(z_tex, UV - vec2(pix_size, 0.0f))
+            + texture(z_tex, UV + vec2(0.0f, pix_size))
+            + texture(z_tex, UV - vec2(0.0f, pix_size)))
+            + (2.0f - 4.0f * a) * (texture(z_tex, UV))
+            - (texture(old_z_tex, UV));
+
+        float z_new_pos = z.r; // positive waves are stored in the red channel
+        float z_new_neg = z.g; // negative waves are stored in the green channel
+        */
+
+        // Update the amplitude, velocity and phase based on the values of the surrounding pixels
+        float2 vel = Result[id.xy].yz;
+        float2 right = float2(x + 1, y);
+        float2 left = float2(x - 1, y);
+        float2 top = float2(x, y + 1);
+        float2 bottum = float2(x, y -1);
+        float4 right_cell = Result[right];
+        float4 left_cell = Result[left];
+        float4 top_cell = Result[top];
+        float4 cell = Result[id.xy];
+
+        float rc_s_x = right_cell.y;
+        float rc_s_z = right_cell.z;
+        float lc_s_x = left_cell.y;
+        float lc_s_y = left_cell.z;
+
+        cell.x += dt * (rc_s_x + lc_s_x + Result[top].z + Result[bottum].z + Result[float2(x +1, y + 1)].y - 8 * vel.x);
+        float2 dvel = vel + c * c * dt * (right_cell.x + left_cell.x + Result[top].x + Result[bottum].x - 4 * cell.x);
+        cell.y = dvel.x;
+        cell.z = dvel.y;
+        
+        //amplitudeTex[x, y] += dt * (velocityTex[x + 1, y].x + velocityTex[x - 1, y].x + velocityTex[x, y + 1].y + velocityTex[x, y - 1].y + velocityTex[x + 1, y + 1].x + velocityTex[x - 1, y - 1].x + velocityTex[x + 1, y - 1].x + velocityTex[x - 1, y + 1].x - 8 * vel.x);
+
+
+        //phaseTex[x, y] += dt * vel.x;
+        Result[id.xy] = float4(cell.x, cell.y,cell.z,0);
+    }
+
+
+    //Result[id.xy] = float4(0, amplitudeTex[x, y], 0, 0.0);
+}
