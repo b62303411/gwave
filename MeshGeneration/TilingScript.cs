@@ -12,6 +12,9 @@ public class TilingScript : MonoBehaviour
     // The resolution of each tile
     public int tileResolution = 10;
 
+    public int startDetail;
+    public int detailReduction = 5;
+
     class Lod 
     {
        public int begin;
@@ -30,19 +33,19 @@ public class TilingScript : MonoBehaviour
     void Start()
     {
         List<Lod>  lodList = new List<Lod>();
-        int startDistance = 350;
-        int increment = 250;
-        int startDetail = 50;
-        int detailReduction=5;
-        for (int i = 0; i < 6;i++) 
+        int startDistance = 0;
+        int increment = tileResolution;
+        int sd = startDetail;
+        for (int i = 0; i < 10;i++) 
         {
             Lod l = new Lod();
             l.begin = startDistance;
             l.end = startDistance + increment;
-            l.detail = startDetail;
+            l.detail = sd - (i*i)*2;
             lodList.Add(l);
             startDistance = l.end;
-            startDetail = startDetail - detailReduction;
+            if(startDetail> detailReduction)
+                startDetail = startDetail - detailReduction;
         }
         // Calculate the size of each tile
         float tileSize = tileResolution;
@@ -74,7 +77,8 @@ public class TilingScript : MonoBehaviour
                 tile.name = "Tile (" + x + ", " + z + ")";
                 float distance = Mathf.Sqrt(Mathf.Pow(position.x, 2) + Mathf.Pow(position.z, 2));
                 float distanceV = Vector3.Distance(position, myCenter);
-                Debug.Log(distance);
+               // Debug.Log(distance);
+                planeGen.setLod(4);
                 foreach (Lod l in lodList) 
                 {
                     if (distance >= l.begin && distance < l.end) 
@@ -82,31 +86,7 @@ public class TilingScript : MonoBehaviour
                         planeGen.setLod(l.detail);
                     }
                 }
-                /*
-                if (distance >= 350 && distance < 350)
-                {
-                    planeGen.setLod(25);
-                }
-                else if(distance >= 350 && distance < 550)
-                {
-                    planeGen.setLod(20);
-                }
-                else if (distance >= 550 && distance < 700)
-                {
-                    planeGen.setLod(10);
-                }
-                else if (distance >= 700 && distance < 1000)
-                {
-                    planeGen.setLod(5);
-                }
-                else if (distance >= 1000 && distance < 2000)
-                {
-                    planeGen.setLod(2);
-                }
-                else if (distance >= 3000)
-                {
-                    planeGen.setLod(2);
-                }*/
+
                 planeGen.generateMesh();
             }
 

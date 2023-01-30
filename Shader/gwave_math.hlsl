@@ -141,4 +141,19 @@ void  gwaves_math_float(float3 position, float4 w1, float4 w2, float4 w3, float4
 
 }
 
+void getLightDirection_float(out float3 lightDir)
+{
+
+#if (SHADERPASS == SHADERPASS_FORWARD)
+    lightDir = _WorldSpaceLightPos0;
+#else
+    lightDir = float3(0, 1, 0);
+#endif
+    //Light mainLight = GetMainLight();
+    //Color = mainLight.color;
+    //direction = mainLight.direction;
+    //Attenuation = mainLight.distanceAttenuation;
+    //direction = _WorldSpaceLightPos0;
+    //direction = float3(1, 1, 1);
+}
 #endif //GWAVEHLSLINCLUDE_INCLUDED

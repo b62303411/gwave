@@ -1,6 +1,6 @@
 #ifndef GWAVEHLSLINCLUDE_INCLUDED
 #define GWAVEHLSLINCLUDE_INCLUDED
-
+#include "UnityCG.cginc"
 
 
 float3  gerstnerwave(float3 vertex, float3 direction, float wl, float s, inout float3 tangent, inout float3 binormal)
@@ -59,5 +59,10 @@ void gwaves_float(float3 vertex,float3 d,float large_wl, float large_s, float sm
 	normal = normalize(cross(binormal, tangent));
 	displacement = p;
 	
+}
+
+void getLightDirection_float( out float3 direction)
+{
+	direction = float3(1, 1, 1);
 }
 #endif //GWAVEHLSLINCLUDE_INCLUDED

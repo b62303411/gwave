@@ -55,7 +55,7 @@ public class WaterController : MonoBehaviour
     public GerstnerData[] getDataV2()
     {
         List<GerstnerData> list = new List<GerstnerData>();
-        for (int i = 1; i < 5; i++)
+        for (int i = 1; i < 6; i++)
         {
             Vector4 vector_w = material.GetVector("_w" + i);
             list.Add(getData(i));
