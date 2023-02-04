@@ -1,0 +1,52 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+RWTexture2D<float4> Result;
+RWTexture2D<float4> land_texture;
+RWTexture2D<float4> z_tex;
+RWTexture2D<float4> old_z_tex;
+RWTexture2D<float4> collision_texture;
+RWTexture2D<float4> old_collision_texture;
+float a;
+float amplitude;
+float grid_points;
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    float pix_size = 1.0f / grid_points;
+	uint2 UV = id.xy;
+	float4 z_at = z_tex[UV];
+	float4 w_s = float4(pix_size, 0.0f, 0.0f, 0.0f);
+	float4 h_s = float4(0.0f, pix_size, 0.0f, 0.0f);
+	float4 z = a * ((z_at + w_s)
+		+ (z_at - w_s)
+		+ (z_at + h_s)
+		+ (z_at - h_s))
+		+ (2.0f - 4.0f * a) * (z_at - old_z_tex[UV]);
+
+	float z_new_pos = z.x; // positive waves are stored in the red channel
+	float z_new_neg = z.y; // negative waves are stored in the green channel
+
+	float collision_state_old = old_collision_texture[UV].x;
+	float collision_state_new = collision_texture[UV].x;
+
+	if (collision_state_new > 0.0f && collision_state_old == 0.0f) {
+		z_new_pos = amplitude * collision_state_new;
+	}
+	else if (collision_state_new == 0.0f && collision_state_old > 0.0f) {
+		z_new_neg = amplitude * collision_state_old;
+	}
+
+	float land = land_texture[UV].x;
+	if (land > 0.0f) {
+		z_new_pos = 0.0f;
+		z_new_neg = 0.0f;
+	}
+
+	Result[id.xy] = float4(z_new_pos, z_new_neg,0.0f,0.0f);
+
+	
+}

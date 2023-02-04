@@ -48,7 +48,7 @@ float CalculateAngularFrequency(float period)
 }
 
 
-void GerstnerWave(float3 position, float3 direction, float wavelength, float steepness, inout float3 displacement, inout float3 tangent, inout float3 binormal)
+void GerstnerWave(float h, float3 position, float3 direction, float wavelength, float steepness, inout float3 displacement, inout float3 tangent, inout float3 binormal)
 {
     float g = 9.80665;
     float pi = 3.14159265358979323846;
@@ -73,14 +73,17 @@ void GerstnerWave(float3 position, float3 direction, float wavelength, float ste
     float theta = dot(k.xz, position.xz) - (w * _Time.y);
     
     // #7 compute amplitude.
-    float amplitude = steepness / wavenumber;
+    //wavenumber*h
+    float value = min(0.01, h * wavenumber);
+    float amplitude = (steepness / wavenumber);
 
     // #8 Km is equal to the wave number.
     float km = wavenumber;
-
-    displacement.x += -(k.x/km * amplitude * sin(theta));
-    displacement.y += amplitude * cos(theta);
-    displacement.z += -(k.z/km * amplitude * sin(theta));
+    float depthAttenuationFactor =h;
+   
+    displacement.x += depthAttenuationFactor * -(k.x/km * amplitude * sin(theta));
+    displacement.y += depthAttenuationFactor * amplitude * cos(theta);
+    displacement.z += depthAttenuationFactor * -(k.z/km * amplitude * sin(theta));
 
     // ds/dx partial derivative for the tengeant.
     tangent.x += -(amplitude * k.x * k.x * cos(theta)) / km;
@@ -97,7 +100,7 @@ void GerstnerWave(float3 position, float3 direction, float wavelength, float ste
 }
 
 
-void gw(float3 position, float4 wave, inout float3 displacement, inout float3 tangent, inout float3 binormal)
+void gw(float h, float3 position, float4 wave, inout float3 displacement, inout float3 tangent, inout float3 binormal)
 {
 
     float wl = wave.x;
@@ -110,10 +113,15 @@ void gw(float3 position, float4 wave, inout float3 displacement, inout float3 ta
 
     float3 normalized_direction = normalize(direction);
 
-    GerstnerWave(position, normalized_direction, wl, s, displacement, tangent, binormal);
+    GerstnerWave(h,position, normalized_direction, wl, s, displacement, tangent, binormal);
 }
 
-void  gwaves_math_float(float3 position, float4 w1, float4 w2, float4 w3, float4 w4, float4 w5, out float3 displacement, out float3 normal, out float3 tangent)
+void  heightFromPixel_float(float height, out float percent) 
+{
+    percent = 0;
+}
+
+void  gwaves_math_float(float3 position, float4 w1, float4 w2, float4 w3, float4 w4, float4 w5,float h, out float3 displacement, out float3 normal, out float3 tangent)
 {
     tangent.x = 1;
     tangent.y = 0;
@@ -128,11 +136,11 @@ void  gwaves_math_float(float3 position, float4 w1, float4 w2, float4 w3, float4
     displacement.y = 0;
     displacement.z = 0;
 
-    gw(position, w1, displacement, tangent, binormal);
-    gw(position, w2, displacement, tangent, binormal);
-    gw(position, w3, displacement, tangent, binormal);
-    gw(position, w4, displacement, tangent, binormal);
-    gw(position, w5, displacement, tangent, binormal);
+    gw(h,position, w1, displacement, tangent, binormal);
+    gw(h,position, w2, displacement, tangent, binormal);
+    gw(h,position, w3, displacement, tangent, binormal);
+    gw(h,position, w4, displacement, tangent, binormal);
+    gw(h,position, w5, displacement, tangent, binormal);
 
     normal = normalize(cross(tangent, binormal));
     tangent = normalize(tangent);
@@ -140,5 +148,81 @@ void  gwaves_math_float(float3 position, float4 w1, float4 w2, float4 w3, float4
 
 
 }
+
+void getLightDirection_float(out float3 lightDir)
+{
+
+#if (SHADERPASS == SHADERPASS_FORWARD)
+    lightDir = _WorldSpaceLightPos0;
+#else
+    lightDir = float3(0, 1, 0);
+#endif
+    //Light mainLight = GetMainLight();
+    //Color = mainLight.color;
+    //direction = mainLight.direction;
+    //Attenuation = mainLight.distanceAttenuation;
+    //direction = _WorldSpaceLightPos0;
+    //direction = float3(1, 1, 1);
+}
+
+SAMPLER(sampler_MainTex);
+void TriplanarSample_float(Texture2D _MainTex, float3 _WorldPos, float _Scale,out float4 result)
+{
+    float3 xaxis = normalize(_WorldPos + float3(1, 0, 0));
+    float3 yaxis = normalize(_WorldPos + float3(0, 1, 0));
+    float3 zaxis = normalize(_WorldPos + float3(0, 0, 1));
+    float3 uv = _WorldPos.zyx;
+    float3 uv2 = _WorldPos.yxz;
+    float3 uv3 = _WorldPos.xyz;
+    
+    float3 diffuseTerm = (_MainTex.Sample(sampler_MainTex, uv.xy).rgb + _MainTex.Sample(sampler_MainTex, uv2.xy).rgb + _MainTex.Sample(sampler_MainTex, uv3.xy).rgb) / 3.0;
+    float3 dTn = normalize(diffuseTerm);
+    
+    float3 absWPos = abs(_WorldPos);
+    float3 nWPos = _WorldPos / max(absWPos.x, max(absWPos.y, absWPos.z));
+
+    float3x3 rotation = float3x3(
+        float3(1, 0, 0),
+        float3(0, 0, -1),
+        float3(0, 1, 0)
+        );
+
+    float3 pX = nWPos;
+    float3 pY = mul(rotation, nWPos);
+    float3 pZ = mul(rotation, pY);
+
+    float3x3 scale = float3x3(
+        float3(_Scale, 0, 0),
+        float3(0, _Scale, 0),
+        float3(0, 0, _Scale)
+        );
+
+    pX = mul(pX, scale);
+    pY = mul(pY, scale);
+    pZ = mul(pZ, scale);
+    //Texture2D _MainTexA;
+
+    // ...
+    half4 colorCxz = _MainTex.Sample(sampler_MainTex, _WorldPos.xz);
+    half4 colorCx = _MainTex.Sample(sampler_MainTex, pX.xy);
+    half4 colorCy = _MainTex.Sample(sampler_MainTex, pX.yz);
+    half4 colorCz = _MainTex.Sample(sampler_MainTex, pX.xz);
+
+    //SamplerState sampler_MainTex;
+
+    //float4 cX = _MainTex.Sample(sampler_MainTex,pX.xy);
+    //float4 cY = _MainTex.Sample(sampler_MainTex,pY.yz);
+    //float4 cZ = _MainTex.Sample(sampler_MainTex,pZ.xz);
+
+    //float3 weight = (absWPos.x > absWPos.y && absWPos.x > absWPos.z) ? nWPos.xz : ((absWPos.y > absWPos.z) ? nWPos.xy : nWPos.yz);
+    float2 weight = (absWPos.x > absWPos.y && absWPos.x > absWPos.z) ? nWPos.xz : ((absWPos.y > absWPos.z) ? nWPos.xy : nWPos.yz);
+    weight = 0.5 * weight + 0.5;
+    //float2 test = colorCx * weight.x + colorCy * weight.y;
+    float2 test = colorCx + colorCy;
+    float4 other_test = (test.x, test.y, 0, 0);
+    float3 dif = diffuseTerm * _Scale;
+    result = (dTn.x, dTn.y, dTn.z, .5);
+}
+
 
 #endif //GWAVEHLSLINCLUDE_INCLUDED

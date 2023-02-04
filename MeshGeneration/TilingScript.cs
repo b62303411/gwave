@@ -12,6 +12,9 @@ public class TilingScript : MonoBehaviour
     // The resolution of each tile
     public int tileResolution = 10;
 
+    public int startDetail;
+    public int detailReduction = 5;
+
     class Lod 
     {
        public int begin;
@@ -30,11 +33,10 @@ public class TilingScript : MonoBehaviour
     void Start()
     {
         List<Lod>  lodList = new List<Lod>();
-        int startDistance = 350;
+        int startDistance = 0;
         int increment = 250;
-        int startDetail = 50;
-        int detailReduction=5;
-        for (int i = 0; i < 6;i++) 
+    
+        for (int i = 0; i < 9;i++) 
         {
             Lod l = new Lod();
             l.begin = startDistance;
@@ -42,7 +44,8 @@ public class TilingScript : MonoBehaviour
             l.detail = startDetail;
             lodList.Add(l);
             startDistance = l.end;
-            startDetail = startDetail - detailReduction;
+            if(startDetail> detailReduction)
+                startDetail = startDetail - detailReduction;
         }
         // Calculate the size of each tile
         float tileSize = tileResolution;
@@ -74,7 +77,8 @@ public class TilingScript : MonoBehaviour
                 tile.name = "Tile (" + x + ", " + z + ")";
                 float distance = Mathf.Sqrt(Mathf.Pow(position.x, 2) + Mathf.Pow(position.z, 2));
                 float distanceV = Vector3.Distance(position, myCenter);
-                Debug.Log(distance);
+               // Debug.Log(distance);
+                planeGen.setLod(4);
                 foreach (Lod l in lodList) 
                 {
                     if (distance >= l.begin && distance < l.end) 
